@@ -33,6 +33,9 @@ This project explores the use of agent-style capabilities (such as tool-use) to 
     OPENAI_API_KEY="<KEY>"
     ANTHROPIC_API_KEY="<KEY>"
     TORI_TASK_ID="<KEY>"
+    
+    # Optional: Use third-party OpenAI-compatible API endpoints
+    OPENAI_API_BASE="https://api.example.com/v1"
     ```
 
     For some tools, additional secrets are expected:

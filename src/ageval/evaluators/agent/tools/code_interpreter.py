@@ -99,8 +99,11 @@ class ToolCodeInterpreter(ToolBase):
         cls, *, text: str, prompt: str, model_name: str, debug: bool = False
     ) -> dict:
         from openai import OpenAI, RateLimitError
+        import os
 
-        client = OpenAI()
+        # Support custom base URLs via environment variable
+        base_url = os.environ.get("OPENAI_API_BASE")
+        client = OpenAI(base_url=base_url)
         content = f"For the prompt:\n```{prompt}\n```\nis the provided answer correct?\n```{text}\n```"
 
         @retry_with_exponential_backoff(

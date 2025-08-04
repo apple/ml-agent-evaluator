@@ -38,7 +38,10 @@ class AssistantModelOpenAI:
 
         logging.getLogger("httpx").setLevel(logging.WARNING)
 
-        self.client = openai.OpenAI()
+        # Support custom base URLs via environment variable
+        import os
+        base_url = os.environ.get("OPENAI_API_BASE")
+        self.client = openai.OpenAI(base_url=base_url)
         if tools is None:
             tools = (["search", "code_interpreter"],)
         tools_api = []

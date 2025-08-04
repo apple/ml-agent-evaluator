@@ -11,7 +11,10 @@ DEFAULT_DOTENV_PATH = pathlib.Path("ageval_secrets.toml").absolute()
 
 
 def setup_api_keys(path: str = None):
-    """Tries to set up API keys based on local secrets file."""
+    """Tries to set up API keys based on local secrets file.
+    
+    Also supports custom OpenAI API base URLs via OPENAI_API_BASE variable.
+    """
 
     if path is None:
         path = DEFAULT_DOTENV_PATH
@@ -23,6 +26,10 @@ def setup_api_keys(path: str = None):
         verbose=True,
     ):
         logger.debug(f"Loaded API keys from '{path}'.")
+        
+        # If OPENAI_API_BASE is set in the file, ensure it's in environment
+        if "OPENAI_API_BASE" in os.environ:
+            logger.debug(f"Using custom OpenAI API base: {os.environ['OPENAI_API_BASE']}")
     else:
         logger.warning(
             f"No secrets file found at '{path}' or no variable set inside file. "

@@ -118,13 +118,18 @@ def get_model(
 
     if model_provider == "openai":
         from langchain_openai import ChatOpenAI
+        import os
 
+        # Support custom base URLs via environment variable
+        base_url = os.environ.get("OPENAI_API_BASE")
+        
         langchain_model = ChatOpenAI(
             model=model_name,
             max_tokens=max_tokens,
             temperature=temp,
             model_kwargs=model_kwargs,
             max_retries=500,
+            base_url=base_url,
         )
     elif model_provider == "openai-assistant":
         from ageval.models.openai import AssistantModelOpenAI
