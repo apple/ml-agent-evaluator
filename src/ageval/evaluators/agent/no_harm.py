@@ -1,7 +1,7 @@
 # For licensing see accompanying LICENSE file.
 # Copyright (C) 2025 Apple Inc. All Rights Reserved.
 from typing import Tuple
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic.v1 import BaseModel, Field
 from loguru import logger
 
 from ageval.constants import DEFAULT_OPENAI_MODEL

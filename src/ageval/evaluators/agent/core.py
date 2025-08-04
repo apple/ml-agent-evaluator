@@ -15,7 +15,7 @@ from ageval.evaluators.agent.tools.base import ToolBase
 import ageval.evaluators.agent.tools.fact_checking  # ensures fact checking tool registered
 import ageval.evaluators.agent.tools.code_interpreter  # import code_interpreter tool to register
 import ageval.evaluators.agent.tools.math_checker  # import math_checker tool to register
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic.v1 import BaseModel, Field
 
 
 class PairwiseEvaluatorAgent(PairwiseEvaluator):

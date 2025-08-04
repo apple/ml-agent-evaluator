@@ -8,7 +8,7 @@ Uses GPT-4o with code interpreter tool.
 """
 
 from typing import Type
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic.v1 import BaseModel, Field
 
 from ageval.evaluators.agent.tools.base import ToolBase
 from ageval.evaluators.agent.tools.registry import register_tool

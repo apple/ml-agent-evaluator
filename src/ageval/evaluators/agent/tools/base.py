@@ -1,6 +1,6 @@
 # For licensing see accompanying LICENSE file.
 # Copyright (C) 2025 Apple Inc. All Rights Reserved.
-from langchain_core.pydantic_v1 import BaseModel
+from pydantic.v1 import BaseModel
 from typing import Type
 
 from ageval.experiments.config import PromptConfig

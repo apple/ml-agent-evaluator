@@ -2,7 +2,7 @@
 # Copyright (C) 2025 Apple Inc. All Rights Reserved.
 from typing import Optional, Union
 import openai
-from langchain_core.pydantic_v1 import BaseModel
+from pydantic.v1 import BaseModel
 from loguru import logger
 
 import ageval.models.utils

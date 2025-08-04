@@ -6,7 +6,7 @@ A tool for checking math via GPT4o + code interpretation.
 """
 
 from typing import Type
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic.v1 import BaseModel, Field
 
 from ageval.evaluators.agent.tools.code_interpreter import ToolCodeInterpreter
 from ageval.evaluators.agent.tools.registry import register_tool

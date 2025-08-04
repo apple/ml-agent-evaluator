@@ -10,7 +10,7 @@ Relevant docs: https://python.langchain.com/v0.2/docs/how_to/structured_output/#
 import os
 from typing import Type
 from loguru import logger
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic.v1 import BaseModel, Field
 from langchain_core.language_models import BaseChatModel
 
 import ageval.models
