@@ -268,11 +268,21 @@ def run_web_search(
     search_query: str,
     max_num_results_per_search: int = 5,
 ):
+    """Run web search with proper error handling and fallback."""
+    try:
+        # Check if RAPID_API_KEY is available
+        api_key = os.environ.get("RAPID_API_KEY")
+        if not api_key:
+            logger.warning("RAPID_API_KEY not found in environment variables. Web search disabled.")
+            return []
+            
+        web_search_agent = ageval.external.web_search.WebSearch(
+            api_key=api_key,
+            limit=max_num_results_per_search,
+            passage_selector_type=None,
+        )
 
-    web_search_agent = ageval.internal.web_search.WebSearch(
-        api_key=os.environ["RAPID_API_KEY"],
-        limit=max_num_results_per_search,
-        passage_selector_type=None,
-    )
-
-    return web_search_agent.rapidapi_web_search(search_query)["data"]
+        return web_search_agent.rapidapi_web_search(search_query)["data"]
+    except Exception as e:
+        logger.error(f"Web search failed for query '{search_query}': {e}")
+        return []

@@ -108,8 +108,8 @@ def patch_replace_serper_with_rapid():
     class RapidSearchAPI:
 
         def __init__(self, *args, **kwargs) -> None:
-            self.web_search_agent = ageval.internal.web_search.WebSearch(
-                api_key=os.environ["RAPID_API_KEY"],
+            self.web_search_agent = ageval.external.web_search.WebSearch(
+                api_key=os.environ.get("RAPID_API_KEY"),
                 limit=NUM_RESULTS_REQUESTED,
                 passage_selector_type=None,
             )

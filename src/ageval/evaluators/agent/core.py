@@ -236,10 +236,16 @@ class PairwiseEvaluatorAgent(PairwiseEvaluator):
                     tools_run.append(tool_name)
                     num_tools_used += 1  # only add to num tools used if fully ran
                 except Exception as e:
-                    logger.debug(f"Tool error for `{tool_name}`: {e}")
-                    tool_output[tool_name] = (
-                        "An error occured during executing this test"
-                    )
+                    logger.warning(f"Tool error for `{tool_name}`: {e}")
+                    # Provide more specific error messages for common issues
+                    if "ageval" in str(e) and "internal" in str(e):
+                        error_msg = f"Internal module import error - some features may require additional setup: {e}"
+                    elif "RAPID_API_KEY" in str(e):
+                        error_msg = "Web search requires RAPID_API_KEY environment variable"
+                    else:
+                        error_msg = f"Tool execution failed: {e}"
+                    
+                    tool_output[tool_name] = f"Error: {error_msg}"
                     summary["errors"].append(
                         f"Error whilst executing tool '{tool_name}' on '{text_name}': {repr(e)}"
                     )
