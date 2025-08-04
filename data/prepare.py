@@ -223,9 +223,28 @@ def prepare_for_use_truthfulqa():
         preferred_col = row["preferred_text"]
         incorrect_col = "text_b" if preferred_col == "text_a" else "text_a"
         row[preferred_col] = row["Best Answer"]
-        row[incorrect_col] = row["Incorrect Answers"][
-            list(row["hashed_IncorrectAnswers"]).index(row[incorrect_col])
-        ]
+        
+        # Handle case where hashed_IncorrectAnswers might be NaN/float
+        if pd.isna(row["hashed_IncorrectAnswers"]) or not isinstance(row["hashed_IncorrectAnswers"], list):
+            # If hashed_IncorrectAnswers is invalid, use first incorrect answer as fallback
+            if isinstance(row["Incorrect Answers"], str):
+                try:
+                    incorrect_answers = eval(row["Incorrect Answers"])
+                except:
+                    incorrect_answers = [row["Incorrect Answers"]]
+            elif pd.isna(row["Incorrect Answers"]):
+                incorrect_answers = ["No answer available"]
+            else:
+                incorrect_answers = row["Incorrect Answers"]
+            
+            if isinstance(incorrect_answers, list) and len(incorrect_answers) > 0:
+                row[incorrect_col] = incorrect_answers[0]
+            else:
+                row[incorrect_col] = "No answer available"
+        else:
+            row[incorrect_col] = row["Incorrect Answers"][
+                list(row["hashed_IncorrectAnswers"]).index(row[incorrect_col])
+            ]
         return row
 
     hf_df: pd.DataFrame = pd.read_csv(directory / "TruthfulQA_v1.csv")
@@ -283,6 +302,9 @@ def prepare_for_use_gsm8k():
         full_path = directory / filename
         if filename.endswith(".csv"):
             df = pd.read_csv(full_path, index_col="index")
+            # Ensure prompt columns have same dtype to avoid merge errors
+            df["prompt"] = df["prompt"].astype(str)
+            hf_df["prompt"] = hf_df["prompt"].astype(str)
             df = df.merge(hf_df, on="prompt", how="left")
             df = df.drop(columns=["prompt"]).rename(columns={"question": "prompt"})
             # To preserve ordering.
@@ -384,6 +406,9 @@ def prepare_for_use_code_apps():
         elif filename.endswith(".csv"):
             df = pd.read_csv(full_path)
             df = df.set_index("index")
+            # Drop existing prompt column if it exists to avoid join conflicts
+            if "prompt" in df.columns:
+                df = df.drop("prompt", axis=1)
             hf_df_prompts = (
                 hf_df[["problem_id", "question"]]
                 .rename(columns={"problem_id": "index", "question": "prompt"})
