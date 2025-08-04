@@ -28,7 +28,7 @@ class AssistantModelOpenAI:
 
     def __init__(
         self,
-        model_name: str = "gpt-4o",
+        model_name: str = "gpt-4o-mini",
         tools: list[dict[str, str]] | None = None,
         temperature: float = 0.0,
         instructions: str | None = None,
@@ -77,7 +77,7 @@ class AssistantModelOpenAI:
         self._assistant_kwargs = {
             "temperature": temperature,
             "instructions": instructions,
-            "model": "gpt-4o",
+            "model": "gpt-4o-mini",
             "tools": tools_api,
         }
         self._instruction_assistants = {

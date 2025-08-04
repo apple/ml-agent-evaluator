@@ -68,7 +68,7 @@ class ToolCodeInterpreter(ToolBase):
         """
         assistant = client.beta.assistants.create(
             instructions=cls.assistant_instruction,
-            model="gpt-4o",
+            model="gpt-4o-mini",
             tools=[{"type": "code_interpreter"}],
         )
         thread = client.beta.threads.create()
